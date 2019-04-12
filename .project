@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>ObjectDefinitions</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.wolfram.eclipse.MEET.MathematicaProjectBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.wolfram.eclipse.MEET.SimpleMathematicaNature</nature>
+	</natures>
+	<filteredResources>
+		<filter>
+			<id>1555063040331</id>
+			<name></name>
+			<type>22</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-desktop.ini</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
+</projectDescription>
