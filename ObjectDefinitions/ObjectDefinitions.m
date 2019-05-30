@@ -116,7 +116,7 @@ object::nodef = "`1` does not match any pattern of `2`.";
 new[object[], _] ^= object[<||>, object]
 
 object[_, type_][expr_] := CompoundExpression[
-	Message[object::nodef, HoldForm[expr], type],
+	Message[object::nodef, expr, type],
 	$Failed
 ]
 
