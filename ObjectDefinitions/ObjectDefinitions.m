@@ -5,22 +5,25 @@
 BeginPackage["ObjectDefinitions`"]
 (* Exported symbols added here with SymbolName::usage *)
 
-class::usage="class[s]
-class[s, b]";
+class::usage="class[sym] makes symbol sym a class.
+class[sym, base] makes symbol sym a class extending base.";
 
-new::usage="";
+new::usage="new@cls[expr1, expr2, ...] instantiates a new expression of class cls using \
+cls[expr1, expr2, ...] as the constructor expression.";
 
-this::usage="";
+this::usage="this refers to an object whose method was called casted to a class \
+whose definition is currently evaluating.";
 
-base::usage="";
+base::usage="base refers to an object whose method was called casted to a class \
+which is the base class of the class whose definition is currently evaluating.";
 
-abstract::usage="";
+abstract::usage="abstract is a symbol which can be assigned to a method to make it abstract.";
 
-virtual::usage="";
+virtual::usage="virtual is a symbol which can wrap a method pattern to make it virtual.";
 
-override::usage="";
+override::usage="override is a symbol which can wrap a method pattern to make it override.";
 
-object::usage="";
+object::usage="object is a base class of all classes in ObjectDefinitions.";
 
 Begin["`Private`"]
 (* Implementation of the package *)
