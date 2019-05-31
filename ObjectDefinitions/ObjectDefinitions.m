@@ -118,7 +118,13 @@ class[object, Null];
 
 object::nodef = "`1` does not match any pattern of `2`.";
 
-new[object[], this_] ^:= object[<||>, Last[this]];
+(*This definition is required to register object[] pattern as an object's
+constructor*)
+object@object[] := {Null, Null};
+
+(*This definition overrides the first definition from the two produced by
+the previous definition*)
+object /: new[object[], this_Symbol] := object[<||>, Last[this]];
 
 object[_, type_][expr_] := CompoundExpression[
 	Message[object::nodef, expr, type],
