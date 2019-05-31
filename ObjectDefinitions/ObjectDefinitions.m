@@ -66,13 +66,12 @@ SetAttributes[addOverridenDefinition, HoldRest]
 addOverridenDefinition[{sym_, parent_}, lhs_, rhs_] := ReplaceAll[
 	With @@ Hold[
 		{
-			this = sym[state, type],
 			base = parent[state, type]
 		},
 		Hold[rhs]
 	],
 	Hold[newRhs_] :> SetDelayed @@ Hold[
-		sym[state_, type_][override[lhs]], newRhs
+		(this : sym[state_, type_])[override[lhs]], newRhs
 	]
 ]
 
