@@ -1,11 +1,17 @@
 (* Paclet Info File *)
 
-(* created 2019.04.12*)
+(* created 2019/05/31*)
 
 Paclet[
-  Name -> "ObjectDefinitions",
-  Version -> "0.0.1",
-  MathematicaVersion -> "6+",
-  Extensions -> {
-    {"Documentation", Language -> "English"}
-}]
+    Name -> "ObjectDefinitions",
+    Version -> "0.1.0",
+    MathematicaVersion -> "10+",
+    Description -> "Object oriented programing for Wolfram Language",
+    Creator -> "Anton Sakovich",
+    Extensions -> 
+        {
+            {"Documentation", Language -> "English"}
+        }
+]
+
+
