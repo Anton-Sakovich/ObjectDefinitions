@@ -90,13 +90,13 @@ addCtorDefinition[{sym_, parent_}, lhs_, {baseInitExpr_, thisInitExpr_}] := Comp
 			sym,
 			new[lhs, this_Symbol],
 			CompoundExpression[
-				this = sym[First@new[basef[parent], this], sym],
+				this = sym @@ new[basef[parent], this],
 				thisf[this],
 				this
 			]
 		]
 	],
-	sym /: new[expr:lhs] := Module[{this}, new[expr, this]]
+	sym /: new[expr:lhs] := Module[{this = sym[Null, sym]}, new[expr, this]]
 ]
 
 
@@ -118,7 +118,7 @@ class[object, Null];
 
 object::nodef = "`1` does not match any pattern of `2`.";
 
-new[object[], _] ^= object[<||>, object]
+new[object[], this_] ^:= object[<||>, Last[this]];
 
 object[_, type_][expr_] := CompoundExpression[
 	Message[object::nodef, expr, type],
