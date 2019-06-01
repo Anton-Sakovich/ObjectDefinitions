@@ -13,12 +13,27 @@ simple1@simple1[x_] := {
 	this[[1, "x"]] = x
 }
 
+simple1@simple1[] := {
+	this[0],
+	Null
+}
+
 
 class[simple2, simple1]
 
 simple2@simple2[x_, y_] := {
 	base[x],
 	this[[1, "y"]] = y
+}
+
+simple2@simple2[x_] := {
+	this[x, x],
+	Null
+}
+
+simple2@simple2[] := {
+	this[0],
+	Null
 }
 
 
@@ -85,6 +100,25 @@ VerificationTest[
 	new@simple2[1, 2],
 	simple2[<|"x" -> 1, "y" -> 2|>, simple2],
 	TestID -> "Derived class is instantiated correctly (two steps)"
+]
+
+
+VerificationTest[
+	new@simple1[],
+	simple1[<|"x" -> 0|>, simple1],
+	TestID -> "Constructor is correctly initialized by the same class (one step, simple1)"
+]
+
+VerificationTest[
+	new@simple2[3],
+	simple2[<|"x" -> 3, "y" -> 3|>, simple2],
+	TestID -> "Constructor is correctly initialized by the same class (one step, simple2)"
+]
+
+VerificationTest[
+	new@simple2[],
+	simple2[<|"x" -> 0, "y" -> 0|>, simple2],
+	TestID -> "Constructor is correctly initialized by the same class (two steps)"
 ]
 
 

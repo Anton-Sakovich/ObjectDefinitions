@@ -83,18 +83,18 @@ ClearAll[addCtorDefinition]
 
 SetAttributes[addCtorDefinition, HoldRest]
 
-addCtorDefinition[{sym_, parent_}, lhs_, {baseInitExpr_, thisInitExpr_}] := CompoundExpression[
+addCtorDefinition[{sym_, parent_}, lhs_, {initExpr_, ctorExpr_}] := CompoundExpression[
 	With[
 		{
-			basef = Function @@ Hold[{base}, baseInitExpr],
-			thisf = Function @@ Hold[{this}, thisInitExpr, {HoldFirst}]
+			initFunction = Function @@ Hold[{this, base}, initExpr],
+			ctorFunction = Function @@ Hold[{this}, ctorExpr, {HoldFirst}]
 		},
 		TagSetDelayed @@ Hold[
 			sym,
 			new[lhs, this_Symbol],
 			CompoundExpression[
-				this = sym @@ new[basef[parent], this],
-				thisf[this],
+				this = sym @@ new[initFunction[sym, parent], this],
+				ctorFunction[this],
 				this
 			]
 		]
