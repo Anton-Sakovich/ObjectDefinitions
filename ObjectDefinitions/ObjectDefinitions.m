@@ -32,7 +32,8 @@ Begin["`Private`"]
 Clear[class]
 
 class[sym_Symbol, parent_Symbol : object] := CompoundExpression[
-	sym[state_, type_][expr_] := parent[state, type][expr],
+	(this : sym[_, _])[expr_] := this[expr, sym],
+	sym[state_, type_][expr_, caller_] := parent[state, type][expr, caller],
 	sym /: (sym@override@lhs_ := rhs_) := addOverridenDefinition[{sym, parent}, lhs, rhs],
 	sym /: (sym@virtual@lhs_ := rhs_) := CompoundExpression[
 		addAbstractDefinition[sym, lhs],
@@ -53,7 +54,7 @@ ClearAll[addInstanceDefinition]
 SetAttributes[addInstanceDefinition, HoldRest]
 
 addInstanceDefinition[sym_, lhs_, rhs_] := SetDelayed @@ Hold[
-	(this : sym[_, _])[lhs], rhs
+	(this : sym[_, _])[lhs, _], rhs
 ]
 
 
@@ -62,7 +63,7 @@ ClearAll[addAbstractDefinition]
 SetAttributes[addAbstractDefinition, HoldRest]
 
 addAbstractDefinition[sym_, lhs_] := SetDelayed @@ Hold[
-	sym[state_, type_][expr:lhs], type[state, type][override[expr]]
+	sym[state_, type_][expr:lhs, _], type[state, type][override[expr]]
 ]
 
 
@@ -78,7 +79,7 @@ addOverridenDefinition[{sym_, parent_}, lhs_, rhs_] := ReplaceAll[
 		Hold[rhs]
 	],
 	Hold[newRhs_] :> SetDelayed @@ Hold[
-		(this : sym[state_, type_])[override[lhs]], newRhs
+		(this : sym[state_, type_])[override[lhs], _], newRhs
 	]
 ]
 
@@ -133,8 +134,8 @@ object@object[] := {base[], Null};
 the previous definition*)
 object /: new[object[], this_Symbol] := object[<||>, Last[this]];
 
-object[_, type_][expr_] := CompoundExpression[
-	Message[object::nodef, expr, type],
+object[_, _][expr_, caller_] := CompoundExpression[
+	Message[object::nodef, expr, caller],
 	$Failed
 ]
 
