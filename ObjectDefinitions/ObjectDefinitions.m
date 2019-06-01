@@ -103,8 +103,7 @@ addCtorDefinition[{sym_, parent_}, lhs_, {initExpr_, ctorExpr_}] := CompoundExpr
 				this
 			]
 		]
-	],
-	sym /: new[expr:lhs] := Module[{this = sym[Null, sym]}, new[expr, this]]
+	]
 ]
 
 
@@ -114,9 +113,14 @@ SetAttributes[new, HoldRest]
 
 new::noctor = "`1` does not match any constructor.";
 
+new[expr_] := Module[
+	{this = Head[expr][Null, Head[expr]]},
+	Catch[new[expr, this], $newMismatch]
+]
+
 new[expr_, _] := CompoundExpression[
 	Message[new::noctor, expr],
-	$Failed
+	Throw[$Failed, $newMismatch]
 ]
 
 
@@ -125,10 +129,6 @@ Clear[object];
 class[object, Null];
 
 object::nodef = "`1` does not match any pattern of `2`.";
-
-(*This definition is required to register object[] pattern as an object's
-constructor*)
-object@object[] := {base[], Null};
 
 (*This definition overrides the first definition from the two produced by
 the previous definition*)
