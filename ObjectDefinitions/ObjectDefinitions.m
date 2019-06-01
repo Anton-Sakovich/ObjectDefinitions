@@ -130,8 +130,6 @@ class[object, Null];
 
 object::nodef = "`1` does not match any pattern of `2`.";
 
-(*This definition overrides the first definition from the two produced by
-the previous definition*)
 object /: new[object[], this_Symbol] := object[<||>, Last[this]];
 
 object[_, _][expr_, caller_] := CompoundExpression[
