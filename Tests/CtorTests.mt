@@ -18,6 +18,16 @@ simple1@simple1[] := {
 	Null
 }
 
+simple1@simple1["error_base"] := {
+	base[1, 2, 3],
+	Throw[$bypassed]
+}
+
+simple1@simple1["error_this"] := {
+	this[1, 2, 3],
+	Throw[$bypassed]
+}
+
 
 class[simple2, simple1]
 
@@ -119,6 +129,28 @@ VerificationTest[
 	new@simple2[],
 	simple2[<|"x" -> 0, "y" -> 0|>, simple2],
 	TestID -> "Constructor is correctly initialized by the same class (two steps)"
+]
+
+
+VerificationTest[
+	new@simple1[1, 2, 3],
+	$Failed,
+	{new::noctor},
+	TestID -> "Erroneous new is caught"
+]
+
+VerificationTest[
+	Catch[new@simple1["error_base"]],
+	$Failed,
+	{new::noctor},
+	TestID -> "Erroneous base is caught"
+]
+
+VerificationTest[
+	Catch[new@simple1["error_this"]],
+	$Failed,
+	{new::noctor},
+	TestID -> "Erroneous this is caught"
 ]
 
 
