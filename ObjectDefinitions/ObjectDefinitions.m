@@ -38,7 +38,11 @@ class[sym_Symbol, parent_Symbol : object] := CompoundExpression[
 		addAbstractDefinition[sym, lhs],
 		addOverridenDefinition[{sym, parent}, lhs, rhs]
 	],
-	sym /: (sym@lhs_sym := rhs_) := addCtorDefinition[{sym, parent}, lhs, rhs],
+	(* sym@sym[...] := {base[...], ...} or sym@sym[...] := {this[...], ...}
+	** are considered as a constructor definition. The first part of the List
+	** must be either base[...] or this[...] to ensure that a correct expression
+	** is passed to new operator. *)
+	sym /: (sym@lhs_sym := (rhs : {_this | _base, _})) := addCtorDefinition[{sym, parent}, lhs, rhs],
 	sym /: (sym@lhs_ := abstract) := addAbstractDefinition[sym, lhs],
 	sym /: (sym@lhs_ := rhs_) := addInstanceDefinition[sym, lhs, rhs]
 ]
@@ -123,7 +127,7 @@ object::nodef = "`1` does not match any pattern of `2`.";
 
 (*This definition is required to register object[] pattern as an object's
 constructor*)
-object@object[] := {Null, Null};
+object@object[] := {base[], Null};
 
 (*This definition overrides the first definition from the two produced by
 the previous definition*)
