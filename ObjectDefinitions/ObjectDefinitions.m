@@ -5,6 +5,8 @@
 BeginPackage["ObjectDefinitions`"]
 (* Exported symbols added here with SymbolName::usage *)
 
+Unprotect["ObjectDefinitions`*"];
+
 class::usage="class[sym] makes symbol sym a class.
 class[sym, base] makes symbol sym a class extending base.";
 
@@ -139,6 +141,8 @@ object[_, _][expr_, caller_] := CompoundExpression[
 
 
 End[]
+
+Protect["ObjectDefinitions`*"]
 
 EndPackage[]
 
