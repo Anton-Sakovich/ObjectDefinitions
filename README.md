@@ -76,7 +76,7 @@ another object definition:
 student[data_, type_][introduce[], caller_: student] := StringJoin[
    person[data, type]@introduce[],
    TemplateApply[
-     "I am studying at `Affiliation`.", data
+     " I am studying at `Affiliation`.", data
    ]
 ];
 ```
@@ -88,14 +88,14 @@ victoria@introduce[]
 (*"Hello, my name is Victoria Chase! I am studying at Blackwell Academy."*)
 ```
 
-Unfortunately, this extension is not polymorphic: when casted back to `person`, `victoria` uses `person`'s implementation:
+But this extension is not polymorphic: when casted back to `person`, `victoria` uses `person`'s implementation:
 
 ```Mathematica
 (person @@ victoria)@introduce[]
 (*"Hello, my name is Victoria Chase!"*)
 ```
 
-We can make it polymorphic in the following way: we will make `person` redirect calls to `introduce[]` to the object's real type:
+In OOP terms, `student`'s definition _hides_ that of `person`. We can make it polymorphic in the following way: we will make `person` redirect calls to `introduce[]` to the object's real type:
 
 ```Mathematica
 person[data_, type_][introduce[], caller_: person] := type[data, type]@override@introduce[];
