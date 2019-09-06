@@ -55,8 +55,16 @@ ClearAll[addInstanceDefinition]
 
 SetAttributes[addInstanceDefinition, HoldRest]
 
-addInstanceDefinition[sym_, lhs_, rhs_] := SetDelayed @@ Hold[
-	(this : sym[_, _])[lhs, _], rhs
+addInstanceDefinition[sym_, lhs_, rhs_] := ReplaceAll[
+	With @@ Hold[
+		{
+			this = $this
+		},
+		Hold[lhs := rhs]
+	],
+	Hold[newLhs_ := newRhs_] :> SetDelayed @@ Hold[
+		($this : sym[_, _])[newLhs, _], newRhs
+	]
 ]
 
 
@@ -76,12 +84,13 @@ SetAttributes[addOverridenDefinition, HoldRest]
 addOverridenDefinition[{sym_, parent_}, lhs_, rhs_] := ReplaceAll[
 	With @@ Hold[
 		{
-			base = parent[state, type]
+			base = parent[state, type],
+			this = $this
 		},
-		Hold[rhs]
+		Hold[lhs := rhs]
 	],
-	Hold[newRhs_] :> SetDelayed @@ Hold[
-		(this : sym[state_, type_])[override[lhs], _], newRhs
+	Hold[newLhs_ := newRhs_] :> SetDelayed @@ Hold[
+		($this : sym[state_, type_])[override[newLhs], _], newRhs
 	]
 ]
 
